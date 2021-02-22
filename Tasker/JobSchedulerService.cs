@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Tasker
 {
+    public class RunOn
+    {
+        
+    }
+
     public abstract class JobSchedulerService : BackgroundService
     {
         protected readonly Dictionary<Timer, Job> JobsAndTimer = new();
@@ -16,6 +21,25 @@ namespace Tasker
         {
 
             if (JobsAndTimer.TryAdd(new Timer(job.Execute, job.Payload, startImmediatly ? TimeSpan.Zero : Timeout.InfiniteTimeSpan, startImmediatly ? job.RunEvery : Timeout.InfiniteTimeSpan), job))
+            {
+                JobsStatus.TryAdd(job.JobId, JobStatusEnum.Started);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AddJob(Job job, DateTime? startOn)
+        {
+            if (startOn.HasValue == false)
+                startOn = DateTime.Now;
+
+            if (startOn.Value < DateTime.Now)
+                throw new ArgumentOutOfRangeException($"{nameof(startOn)} should be set to future date, or to NULL ");
+
+            var waitBeforeStarting = startOn.Value - DateTime.Now;
+
+            if (JobsAndTimer.TryAdd(new Timer(job.Execute, job.Payload, waitBeforeStarting , job.RunEvery), job))
             {
                 JobsStatus.TryAdd(job.JobId, JobStatusEnum.Started);
                 return true;

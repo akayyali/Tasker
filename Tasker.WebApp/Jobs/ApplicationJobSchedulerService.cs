@@ -14,7 +14,7 @@ namespace Tasker.WebApp.Jobs
                 RunEvery = TimeSpan.FromSeconds(10),
                 Payload = "Hardware in excellent condition"
             };
-            AddJob(Job, true);
+            AddJob(Job, DateTime.Now.AddSeconds(30));
 
             //you can fetch jobs from db and add them here
         }
