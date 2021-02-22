@@ -7,6 +7,8 @@ it allows you to :
 *Stop
 and Schedule Jobs to be run on extact date and time.
 
+Nuget package: https://www.nuget.org/packages/inmemtasker
+
 Adding a new Scheduler Service is very simple :
 
 First make sure you DI all your Jobs
