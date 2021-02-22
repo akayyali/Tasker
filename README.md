@@ -1,5 +1,5 @@
 # Tasker 
-is an InMemory lighweight recurring Tasks scheduler.
+Is an In-Memory lighweight recurring Tasks scheduler.
 it allows you to :
 *Add
 *Remove
