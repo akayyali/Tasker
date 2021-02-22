@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace Tasker
 {
-    public class RunOn
-    {
-        
-    }
-
     public abstract class JobSchedulerService : BackgroundService
     {
         protected readonly Dictionary<Timer, Job> JobsAndTimer = new();
         protected readonly Dictionary<Guid, JobStatusEnum> JobsStatus = new();
 
+        /// <summary>
+        /// Adds a new recurring Job
+        /// </summary>
+        /// <param name="job">The job to be run on each interval</param>
+        /// <param name="startOn">set to false if you don`t want to start the job immediatly, default is true</param>
+        /// <returns></returns>
         public bool AddJob(Job job, bool startImmediatly = true)
         {
 
@@ -29,6 +30,12 @@ namespace Tasker
             return false;
         }
 
+        /// <summary>
+        /// Adds a new recurring Job
+        /// </summary>
+        /// <param name="job">The job to be run on each interval</param>
+        /// <param name="startOn">When to start the Jon, set it to NULL if you want start immediatly</param>
+        /// <returns></returns>
         public bool AddJob(Job job, DateTime? startOn)
         {
             if (startOn.HasValue == false)
@@ -48,6 +55,11 @@ namespace Tasker
             return false;
         }
 
+        /// <summary>
+        /// Stops a Job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
         public bool RemoveJob(Guid jobId)
         {
             bool deleted = false;
@@ -63,6 +75,10 @@ namespace Tasker
 
             return deleted;
         }
+
+        /// <summary>
+        /// returns an IEnumerable of all registered Jobs
+        /// </summary>
         public IEnumerable<Job> Jobs
         {
             get
@@ -70,6 +86,11 @@ namespace Tasker
                 return JobsAndTimer.Values.Select(job => job);
             }
         }
+
+        /// <summary>
+        /// Stops a Job from running, if the job is already started, current execution will continue but further runs won`t happen
+        /// </summary>
+        /// <param name="JobId"></param>
         public void StopJob(Guid JobId)
         {
             foreach (var job in JobsAndTimer)
@@ -82,6 +103,10 @@ namespace Tasker
             }
         }
 
+        /// <summary>
+        /// Starts a job that is registered
+        /// </summary>
+        /// <param name="JobId"></param>
         public void StartJob(Guid JobId)
         {
             foreach (var job in JobsAndTimer)
@@ -93,6 +118,7 @@ namespace Tasker
                 }
             }
         }
+
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             return base.StartAsync(cancellationToken);
