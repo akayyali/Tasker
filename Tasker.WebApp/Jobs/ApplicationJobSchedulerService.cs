@@ -11,7 +11,7 @@ namespace Tasker.WebApp.Jobs
         {
             var Job = new CheckSystemHardwareJob(serviceProvider)
             {
-                RunEvery = TimeSpan.FromSeconds(10),
+                RunEvery = TimeSpan.FromSeconds(30),
                 Payload = "Hardware in excellent condition"
             };
 
