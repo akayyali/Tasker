@@ -1,11 +1,18 @@
 # Tasker 
-is an InMemory lighweight recurring Tasks scheduler.
+Is an In-Memory lighweight recurring Tasks scheduler.
 it allows you to :
+
 *Add
+
 *Remove
+
 *Start
+
 *Stop
+
 and Schedule Jobs to be run on extact date and time.
+
+Nuget package: https://www.nuget.org/packages/inmemtasker
 
 Adding a new Scheduler Service is very simple :
 

@@ -5,7 +5,7 @@ namespace Tasker
     public abstract class Job
     {
         /// <summary>
-        /// Auto generated Id, to help track Jobs, this is useful when you want to stop or remove and existing Job, and for correlation 
+        /// Auto generated Id, to help track Jobs, this is useful when you want to stop or remove an existing Job, and as a correlation Id 
         /// </summary>
         public Guid JobId = Guid.NewGuid();
         
