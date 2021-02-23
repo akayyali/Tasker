@@ -49,7 +49,7 @@ namespace Tasker
             set
             {
                 if (value < 0 || value > 59)
-                    throw new ArgumentOutOfRangeException(nameof(Minute), $"Invalid value '{value}', the Second value should be netween (0 thourgh 59)");
+                    throw new ArgumentOutOfRangeException(nameof(Second), $"Invalid value '{value}', the Second value should be netween (0 thourgh 59)");
 
                 second = value;
             }
