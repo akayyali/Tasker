@@ -16,11 +16,11 @@ Nuget package: https://www.nuget.org/packages/inmemtasker
 
 Adding a new Scheduler Service is very simple :
 
-First make sure you DI all your Jobs
+First make sure you DI your scheduler service
 
             services.AddSingleton<ApplicationJobSchedulerService>();
-            services.AddTransient<CheckSystemHardwareJob, CheckSystemHardwareJob>();
-            services.AddTransient<CheckSystemHealthJob, CheckSystemHealthJob>();
+            //DI your jobs only if you want inject them
+            services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp) { RunEvery = TimeSpan.FromSeconds(10), Payload = "http://google.com"}; });
 
 Then register your SchedulerService
 
