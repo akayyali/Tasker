@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Tasker.WebApp.Jobs;
 
-namespace Tasker.WebApp.Jobs
+namespace Tasker.WebApp.SchedulerServices
 {
     public class ApplicationJobSchedulerService : JobSchedulerService
     {
@@ -16,7 +14,7 @@ namespace Tasker.WebApp.Jobs
             };
 
             //AddJob(Job, DateTime.Now.AddSeconds(30));
-            AddJob(Job, new StartOnNextDayOfWeek() { DayOfWeek = DayOfWeek.Saturday, Hour = 15, Minute= 30, Second = 15 });
+            AddJob(Job, new StartOnNextDayOfWeek() { DayOfWeek = DayOfWeek.Saturday, Hour = 15, Minute = 30, Second = 15 });
 
             //you can fetch jobs from db and add them here
         }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tasker.WebApp.Jobs;
+using Tasker.WebApp.SchedulerServices;
 
 namespace Tasker.WebApp
 {
@@ -27,8 +28,9 @@ namespace Tasker.WebApp
             services.AddControllersWithViews();
 
             services.AddSingleton<ApplicationJobSchedulerService>();
-            services.AddTransient<CheckSystemHardwareJob, CheckSystemHardwareJob>();
-            services.AddTransient<CheckSystemHealthJob, CheckSystemHealthJob>();
+            
+            //DI your jobs only if you want inject them
+            services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp) { RunEvery = TimeSpan.FromSeconds(10), Payload = "http://google.com"}; });
 
             services.AddHostedService<ApplicationJobSchedulerService>(sp =>
             {
