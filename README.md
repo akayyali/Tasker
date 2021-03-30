@@ -52,6 +52,6 @@ You can also add jobs dynamically from within the scheduler service
                       };
                       AddJob(Job, DateTime.Now.AddSeconds(30));
 
-                      //you can fetch jobs from db and add them here
+                      //you can fetch jobs from external sources like db, or web resources and add them here
                   }
               }
