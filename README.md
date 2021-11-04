@@ -42,7 +42,9 @@ You can also add jobs dynamically from within the scheduler service
                   {
                       var Job = new CheckSystemHardwareJob(serviceProvider, TimeSpan.FromSeconds(30), "Hardware in excellent condition");
                       Job.Executing += Job_Executing;
-                      AddJob(Job, DateTime.Now.AddSeconds(30));
+                      
+                      //Set Job to Kick on a specfic day and time of week.
+                      AddJob(Job, new StartOnNextDayOfWeek() { DayOfWeek = DayOfWeek.Saturday, Hour = 15, Minute = 30, Second = 15 });
 
                       //you can fetch jobs from external sources like db, or web resources and add them here
                   }
