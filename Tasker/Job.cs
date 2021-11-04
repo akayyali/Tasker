@@ -3,16 +3,6 @@ using System.Threading;
 
 namespace Tasker
 {
-    public class JobExecutingEventArgs
-    {
-        public bool Skip { get; set; }
-        public Guid ExecutionId { get; set; }
-    }
-    public class JobExecutedEventArgs
-    {
-        public Guid ExecutionId { get; set; }
-
-    }
     public abstract partial class Job
     {
         public event EventHandler<JobExecutingEventArgs> Executing;
