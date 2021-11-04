@@ -7,16 +7,17 @@ namespace Tasker.WebApp.SchedulerServices
     {
         public ApplicationJobSchedulerService(IServiceProvider serviceProvider)
         {
-            var Job = new CheckSystemHardwareJob(serviceProvider)
-            {
-                RunEvery = TimeSpan.FromSeconds(30),
-                Payload = "Hardware in excellent condition"
-            };
+            var Job = new CheckSystemHardwareJob(serviceProvider, TimeSpan.FromSeconds(30), "Hardware in excellent condition");
+            Job.Executing += Job_Executing;
 
-            //AddJob(Job, DateTime.Now.AddSeconds(30));
             AddJob(Job, new StartOnNextDayOfWeek() { DayOfWeek = DayOfWeek.Saturday, Hour = 15, Minute = 30, Second = 15 });
 
             //you can fetch jobs from db and add them here
+        }
+
+        private void Job_Executing(object sender, JobExecutingEventArgs e)
+        {
+            
         }
     }
 }

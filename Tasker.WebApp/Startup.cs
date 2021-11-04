@@ -30,17 +30,13 @@ namespace Tasker.WebApp
             services.AddSingleton<ApplicationJobSchedulerService>();
             
             //DI your jobs only if you want inject them
-            services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp) { RunEvery = TimeSpan.FromSeconds(10), Payload = "http://google.com"}; });
+            services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp, TimeSpan.FromSeconds(10), "http://google.com"); });
 
             services.AddHostedService<ApplicationJobSchedulerService>(sp =>
             {
                 var srv = sp.GetRequiredService<ApplicationJobSchedulerService>();
 
-                srv.AddJob(new CheckSystemHealthJob(sp)
-                {
-                    RunEvery = TimeSpan.FromSeconds(5),
-                    Payload = "All systems are running smoothly"
-                }, true);
+                srv.AddJob(new CheckSystemHealthJob(sp, TimeSpan.FromSeconds(3),"All systems are running smoothly" ), true);
 
 
                 return srv;

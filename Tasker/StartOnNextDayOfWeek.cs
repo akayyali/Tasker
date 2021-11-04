@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tasker
 {
-    public record StartOnNextDayOfWeek
+    public class StartOnNextDayOfWeek
     {
         private int hour;
         private int minute;

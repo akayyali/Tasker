@@ -10,8 +10,8 @@ namespace Tasker
     
     public abstract class JobSchedulerService : BackgroundService
     {
-        protected readonly Dictionary<Timer, Job> JobsAndTimer = new();
-        protected readonly Dictionary<Guid, JobStatusEnum> JobsStatus = new();
+        protected readonly Dictionary<Timer, Job> JobsAndTimer = new Dictionary<Timer, Job>();
+        protected readonly Dictionary<Guid, JobStatusEnum> JobsStatus = new Dictionary<Guid, JobStatusEnum>();
 
         /// <summary>
         /// Adds a new recurring Job
@@ -36,13 +36,18 @@ namespace Tasker
         /// <returns></returns>
         public bool AddJob(Job job, bool startImmediatly = true)
         {
-
-            if (JobsAndTimer.TryAdd(new Timer(job.Execute, job.Payload, startImmediatly ? TimeSpan.Zero : Timeout.InfiniteTimeSpan, startImmediatly ? job.RunEvery : Timeout.InfiniteTimeSpan), job))
+            
+            if (JobsAndTimer.TryAdd(new Timer(
+                callback=> {
+                job.OnExecuting(new JobExecutingEventArgs());
+                job.Execute(callback);
+                job.OnExecuted(new JobExecutedEventArgs());
+                }, 
+                job.Payload, startImmediatly ? TimeSpan.Zero : Timeout.InfiniteTimeSpan, startImmediatly ? job.RunEvery : Timeout.InfiniteTimeSpan), job))
             {
                 JobsStatus.TryAdd(job.JobId, JobStatusEnum.Started);
                 return true;
             }
-
             return false;
         }
 
