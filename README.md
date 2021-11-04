@@ -20,7 +20,7 @@ First make sure you DI your scheduler service
 
             services.AddSingleton<ApplicationJobSchedulerService>();
             //DI your jobs only if you want inject them
-            services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp) { RunEvery = TimeSpan.FromSeconds(10), Payload = "http://google.com"}; });
+            services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp, TimeSpan.FromSeconds(10), "http://google.com"); });
 
 Then register your SchedulerService
 
@@ -29,12 +29,7 @@ Then register your SchedulerService
                 var srv = sp.GetRequiredService<ApplicationJobSchedulerService>();
                 
                 //add any jobs you want here
-                srv.AddJob(new CheckSystemHealthJob(sp)
-                {
-                    RunEvery = TimeSpan.FromSeconds(5),
-                    Payload = "All systems are running smoothly"
-                }, true);
-
+                srv.AddJob(new CheckSystemHealthJob(sp, TimeSpan.FromSeconds(3),"All systems are running smoothly" ), true);
 
                 return srv;
             });
@@ -45,13 +40,14 @@ You can also add jobs dynamically from within the scheduler service
               {
                   public ApplicationJobSchedulerService(IServiceProvider serviceProvider)
                   {
-                      var Job = new CheckSystemHardwareJob(serviceProvider)
-                      {
-                          RunEvery = TimeSpan.FromSeconds(10),
-                          Payload = "Hardware in excellent condition"
-                      };
+                      var Job = new CheckSystemHardwareJob(serviceProvider, TimeSpan.FromSeconds(30), "Hardware in excellent condition");
+                      Job.Executing += Job_Executing;
                       AddJob(Job, DateTime.Now.AddSeconds(30));
 
                       //you can fetch jobs from external sources like db, or web resources and add them here
                   }
+                  private void Job_Executing(object sender, JobExecutingEventArgs e)
+                    {
+                        //e.Skip = true;
+                    }
               }
