@@ -2,13 +2,13 @@
 Is an In-Memory lighweight recurring Tasks scheduler.
 it allows you to :
 
-*Add
+<ul>
+<li>Add</li>
+<li>Remove</li>
+<li>Start</li>
+<li>Stop</li>
 
-*Remove
-
-*Start
-
-*Stop
+</ul>
 
 and Schedule Jobs to be run on extact date and time.
 
@@ -18,16 +18,16 @@ Adding a new Scheduler Service is very simple :
 
 Start by instaling nuget package using:
 
-Install-Package InMemTasker
+`Install-Package InMemTasker`
 
 Then Make sure you DI your scheduler service
-
+``` CSHarp
             services.AddSingleton<ApplicationJobSchedulerService>();
             //DI your jobs only if you want inject them
             services.AddTransient<PingExternalDependencyJob>(sp=> { return new PingExternalDependencyJob(sp, TimeSpan.FromSeconds(10), "http://google.com"); });
-
+```
 Then register your SchedulerService
-
+``` CSHarp
             services.AddHostedService<ApplicationJobSchedulerService>(sp =>
             {
                 var srv = sp.GetRequiredService<ApplicationJobSchedulerService>();
@@ -37,9 +37,10 @@ Then register your SchedulerService
 
                 return srv;
             });
-            
+```            
 You can also add jobs dynamically from within the scheduler service
 
+``` CSHarp
           public class ApplicationJobSchedulerService : JobSchedulerService
               {
                   public ApplicationJobSchedulerService(IServiceProvider serviceProvider)
@@ -57,3 +58,4 @@ You can also add jobs dynamically from within the scheduler service
                         //e.Skip = true;
                     }
               }
+```
