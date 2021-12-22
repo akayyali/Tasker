@@ -16,7 +16,11 @@ Nuget package: https://www.nuget.org/packages/inmemtasker
 
 Adding a new Scheduler Service is very simple :
 
-First make sure you DI your scheduler service
+Start by instaling nuget package using:
+
+Install-Package InMemTasker
+
+Then Make sure you DI your scheduler service
 
             services.AddSingleton<ApplicationJobSchedulerService>();
             //DI your jobs only if you want inject them
